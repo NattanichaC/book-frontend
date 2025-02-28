@@ -5,7 +5,7 @@ const App = () => {
   const [books, setBooks] = useState([]);
   const [newBook, setNewBook] = useState({ title: '', author: '', image_url: ''});
   const [editBook, setEditBook] = useState(null);
-  const uri = 'https://scaling-parakeet-5gv9p6vpv6c4977-5001.app.github.dev/'
+  const uri = 'https://glorious-space-fiesta-4jvr67x957pp3jwx9-5001.app.github.dev/'
   useEffect(() => {
     fetchBooks();
   }, []);
@@ -29,6 +29,11 @@ const App = () => {
   };
 
   const handleCreateBook = async () => {
+    if (!newBook.title.trim() || !newBook.author.trim() || !newBook.image_url.trim()) {
+      alert('กรุณากรอกข้อมูลให้ครบทุกช่อง!');
+      return;
+    }
+  
     try {
       const response = await axios.post(`${uri}/books`, newBook);
       setBooks([...books, response.data]);
@@ -37,12 +42,18 @@ const App = () => {
       console.error('Error creating book:', error);
     }
   };
+  
 
   const handleEditBook = (book) => {
     setEditBook({ ...book });
   };
 
   const handleUpdateBook = async () => {
+    if (!editBook.title.trim() || !editBook.author.trim() || !editBook.image_url.trim()) {
+      alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+      return;
+    }
+  
     try {
       const response = await axios.put(`${uri}/books/${editBook.id}`, editBook);
       const updatedBooks = books.map((book) =>
